@@ -9,6 +9,13 @@ public class User {
 	private String email;
 	private ArrayList<StoredItem> items;
 	
+	public User(long id, String username, String password, String email) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+	}
+	
 	public long getId() {
 		return id;
 	}
