@@ -1,10 +1,13 @@
 package com.capstone.model;
 
+import java.util.Date;
+import java.util.UUID;
+
 public class Note extends StoredItem {
 	private String contents;
 	
-	public Note(String name, String description, String contents) {
-		super(name, description);
+	public Note(UUID id, String name, String description, Date created, Date modified, String contents) {
+		super(id, name, description, created, modified);
 		
 		this.contents = contents;
 	}

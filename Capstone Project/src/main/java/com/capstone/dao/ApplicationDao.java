@@ -7,31 +7,59 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import com.capstone.dbconnection.DBConnectionInfo;
 import com.capstone.dbconnection.DBConnector;
+import com.capstone.model.StoredItem;
 import com.capstone.model.User;
-import com.capstone.model.UserBuilder;
+import com.capstone.model.builder.UserBuilder;
+import com.capstone.model.factory.StoredItemFactory;
 
 public class ApplicationDao implements DaoService {
-	private static final String INSERT_SQL = "INSERT INTO USER (username, password, email) VALUES (?, ?, ?);";
-	private static final String SELECT_ALL_SQL = "SELECT * FROM user;";
+	private static final String INSERT_USER_SQL = "INSERT INTO USER (id, username, password, email) VALUES (?, ?, ?, ?);";
+	
+	private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM user u;";
+	private static final String SELECT_STORED_ITEMS_SQL = "SELECT * FROM stored_item si "
+			+ "LEFT JOIN note n ON n.item_id = si.id "
+			+ "LEFT JOIN password p ON p.item_id = si.id "
+			+ "LEFT JOIN profile pr ON pr.item_id = si.id "
+			+ "WHERE si.user_id = ?;";
+	
+	private static final String SELECT_ONE_SQL = "SELECT * FROM user u WHERE u.id = ?;";
+	
+	private static final String DELETE_SQL = "DELETE FROM user WHERE id = ?;";
+	private static final String UPDATE_SQL = "UPDATE user SET username = ?, password = ?, email = ? WHERE id = ?;";
+	
+	private final DBConnectionInfo connectionInfo;
+	
+	private UserBuilder userBuilder;
+	private StoredItemFactory storedItemFactory;
+	
+	public ApplicationDao() {
+		this(DBConnectionInfo.HSQL);
+	}
+	
+	public ApplicationDao(DBConnectionInfo connectionInfo) {
+		this.connectionInfo = connectionInfo;
+	}
 	
 	@Override
 	public boolean createUser(User user) {
 		int insertedRows = 0;
 		
 		try (
-			Connection connection = DBConnector.getConnection();
-			PreparedStatement statement = connection.prepareStatement(INSERT_SQL);
+			Connection connection = DBConnector.getConnection(connectionInfo);
+			PreparedStatement statement = connection.prepareStatement(INSERT_USER_SQL);
 		) {
-			statement.setString(1, user.getUsername());
-			statement.setString(2, user.getPassword());
-			statement.setString(3, user.getEmail());
+			statement.setString(1, user.getId().toString());
+			statement.setString(2, user.getUsername());
+			statement.setString(3, user.getPassword());
+			statement.setString(4, user.getEmail());
 			
 			insertedRows = statement.executeUpdate();
 		}
-		catch (SQLException e)
-		{
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
@@ -39,9 +67,26 @@ public class ApplicationDao implements DaoService {
 	}
 
 	@Override
-	public User getUser(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public User getUser(UUID id) {
+		User user = null;
+		
+		try (
+			Connection connection = DBConnector.getConnection(connectionInfo);
+			PreparedStatement statement = connection.prepareStatement(SELECT_ONE_SQL);
+		) {
+			statement.setString(1, id.toString());
+			
+			ResultSet results = statement.executeQuery();
+			
+			while (results.next()) {
+				user = buildUser(connection, results);
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return user;
 	}
 
 	@Override
@@ -49,26 +94,13 @@ public class ApplicationDao implements DaoService {
 		ArrayList<User> users = new ArrayList<User>();
 		
 		try (
-			Connection connection = DBConnector.getConnection();
+			Connection connection = DBConnector.getConnection(connectionInfo);
 			Statement statement = connection.createStatement();
 		) {
-			ResultSet results = statement.executeQuery(SELECT_ALL_SQL);
+			ResultSet results = statement.executeQuery(SELECT_ALL_USERS_SQL);
 			
-			UserBuilder userBuilder = new UserBuilder();
-			
-			while (results.next()) {
-				long id = results.getLong("id");
-				String username = results.getString("username");
-				String password = results.getString("password");
-				String email = results.getString("email");
-				
-				User user = userBuilder
-						.setId(id)
-						.setUsername(username)
-						.setPassword(password)
-						.setEmail(email)
-						.build();
-				
+			while (results.next()) {			
+				User user = buildUser(connection, results);
 				users.add(user);
 			}
 		}
@@ -78,19 +110,88 @@ public class ApplicationDao implements DaoService {
 		
 		return users;
 	}
+	
+	private User buildUser(Connection connection, ResultSet results) throws SQLException {
+		if (userBuilder == null) {
+			userBuilder = new UserBuilder();
+		}
+		
+		UUID id = UUID.fromString(results.getString("id"));		
+		List<StoredItem> items = getItems(connection, id.toString());
+		
+		User user = userBuilder
+			.setId(id)
+			.setUsername(results.getString("username"))
+			.setPassword(results.getString("password"))
+			.setEmail(results.getString("email"))
+			.withItems(items)
+			.build();
+		
+		return user;
+	}
+	
+	private List<StoredItem> getItems(Connection connection, String userId) throws SQLException {
+		List<StoredItem> items = new ArrayList<StoredItem>();
+		StoredItem item = null;
+		
+		PreparedStatement itemsStatement = connection.prepareStatement(SELECT_STORED_ITEMS_SQL);
+		itemsStatement.setString(1, userId);
+		
+		ResultSet results = itemsStatement.executeQuery();
+		
+		if (storedItemFactory == null) {
+			storedItemFactory = new StoredItemFactory();
+		}
+		
+		while (results.next()) {
+			item = storedItemFactory.createItem(results);
+			items.add(item);
+		}
+		
+		return items;
+	}
 
 	@Override
 	public boolean updateUser(User user) {
-		// TODO Auto-generated method stub
+		boolean success = false;
 		
-		return false;
+		try (
+				Connection connection = DBConnector.getConnection(connectionInfo);
+				PreparedStatement statement = connection.prepareStatement(UPDATE_SQL);
+		) {
+			statement.setString(1, user.getUsername());
+			statement.setString(2, user.getPassword());
+			statement.setString(3, user.getEmail());
+			statement.setString(4, user.getId().toString());
+			
+			int rowCount = statement.executeUpdate();
+			success = rowCount > 0;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return success;
 	}
 
 	@Override
 	public boolean deleteUser(User user) {
-		// TODO Auto-generated method stub
+		boolean success = false;
 		
-		return false;
+		try (
+				Connection connection = DBConnector.getConnection(connectionInfo);
+				PreparedStatement statement = connection.prepareStatement(DELETE_SQL);
+		) {
+			statement.setString(1, user.getId().toString());
+			
+			int rowCount = statement.executeUpdate();
+			success = rowCount > 0;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return success;
 	}
 	
 }

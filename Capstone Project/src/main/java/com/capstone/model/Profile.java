@@ -1,14 +1,17 @@
 package com.capstone.model;
 
+import java.util.Date;
+import java.util.UUID;
+
 public class Profile extends StoredItem {
 	private String firstName;
 	private String lastName;
 	private String address;
 	private String city;
 	
-	public Profile(String name, String description, String firstName, String lastName, String address, String city) {
-		super(name, description);
-
+	public Profile(UUID id, String name, String description, Date created, Date modified, String firstName, String lastName, String address, String city) {
+		super(id, name, description, created, modified);
+		
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;

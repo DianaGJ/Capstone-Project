@@ -1,11 +1,14 @@
 package com.capstone.model;
 
+import java.util.Date;
+import java.util.UUID;
+
 public class Password extends StoredItem {
 	private String website;
 	private String password;
 	
-	public Password(String name, String description, String website, String password) {
-		super(name, description);
+	public Password(UUID id, String name, String description, Date created, Date modified, String website, String password) {
+		super(id, name, description, created, modified);
 		
 		this.website = website;
 		this.password = password;

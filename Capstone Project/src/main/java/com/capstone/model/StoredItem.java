@@ -1,20 +1,16 @@
 package com.capstone.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 public abstract class StoredItem {
-	private long id;
+	private UUID id;
 	private String name;
 	private String description;
 	private Date created;
 	private Date lastModified;
 	
-	// Helper constructor that uses one DateTime for created and lastModified.
-	private StoredItem(String name, String description, Date created) {
-		this(0, name, description, created, created);
-	}
-	
-	public StoredItem(long id, String name, String description, Date created, Date lastModified) {
+	public StoredItem(UUID id, String name, String description, Date created, Date lastModified) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -22,11 +18,7 @@ public abstract class StoredItem {
 		this.lastModified = lastModified;
 	}
 	
-	public StoredItem(String name, String description) {
-		this(name, description, new Date());
-	}
-	
-	public long getId() {
+	public UUID getId() {
 		return id;
 	}
 	
