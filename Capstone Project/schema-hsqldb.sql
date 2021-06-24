@@ -14,14 +14,14 @@ CREATE TABLE stored_item (
 	item_type	CHAR(2) NOT NULL CHECK (item_type IN ('NO', 'PA', 'PR')),
 	user_id		VARCHAR(36) NOT NULL,
 	
-	FOREIGN KEY (user_id) REFERENCES user(id)
+	FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 CREATE TABLE note (
 	item_id		VARCHAR(36) PRIMARY KEY,
 	contents	LONGVARCHAR NOT NULL,
 	
-	FOREIGN KEY(item_id) REFERENCES stored_item(id)
+	FOREIGN KEY(item_id) REFERENCES stored_item(id) ON DELETE CASCADE
 );
 
 CREATE TABLE password (
@@ -29,7 +29,7 @@ CREATE TABLE password (
 	website		VARCHAR(100) NOT NULL,
 	password	VARCHAR(50)	NOT NULL,
 	
-	FOREIGN KEY(item_id) REFERENCES stored_item(id)
+	FOREIGN KEY(item_id) REFERENCES stored_item(id) ON DELETE CASCADE
 );
 
 CREATE TABLE profile (
@@ -39,5 +39,5 @@ CREATE TABLE profile (
 	address		VARCHAR(100) NOT NULL,
 	city		VARCHAR(50) NOT NULL,
 	
-	FOREIGN KEY(item_id) REFERENCES stored_item(id)
+	FOREIGN KEY(item_id) REFERENCES stored_item(id) ON DELETE CASCADE
 );

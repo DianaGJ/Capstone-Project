@@ -29,4 +29,9 @@ public class Password extends StoredItem {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	@Override
+	public String getItemTypeCode() {
+		return "PA";
+	}
 }

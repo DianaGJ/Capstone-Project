@@ -33,4 +33,9 @@ public class Profile extends StoredItem {
 	public String getCity() {
 		return city;
 	}
+	
+	@Override
+	public String getItemTypeCode() {
+		return "PR";
+	}
 }

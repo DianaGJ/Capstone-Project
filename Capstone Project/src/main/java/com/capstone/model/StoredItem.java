@@ -18,6 +18,10 @@ public abstract class StoredItem {
 		this.lastModified = lastModified;
 	}
 	
+	public StoredItem(UUID id, String name, String description) {
+		this(id, name, description, null, null);
+	}
+	
 	public UUID getId() {
 		return id;
 	}
@@ -34,12 +38,9 @@ public abstract class StoredItem {
 		return created;
 	}
 	
-	public final Date getLastModified() {
+	public Date getLastModified() {
 		return lastModified;
 	}
 	
-	// Tells StoredItem to update lastModified to the current date and time.
-	protected final void updateLastModified() {
-		lastModified = new Date();
-	}
+	public abstract String getItemTypeCode();
 }
