@@ -8,7 +8,7 @@ CREATE TABLE user (
 CREATE TABLE stored_item (
 	id			VARCHAR(36) PRIMARY KEY,
 	name		VARCHAR(50) NOT NULL,
-	description	VARCHAR(100) NOT NULL,
+	description	VARCHAR(100),
 	created		DATETIME DEFAULT NOW NOT NULL,
 	modified	DATETIME DEFAULT NOW NOT NULL,
 	item_type	CHAR(2) NOT NULL CHECK (item_type IN ('NO', 'PA', 'PR')),

@@ -9,15 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.capstone.dao.strategy.SaveNoteDecorator;
-import com.capstone.dao.strategy.SavePasswordDecorator;
-import com.capstone.dao.strategy.SaveProfileDecorator;
-import com.capstone.dao.strategy.SaveItemPreparer;
 import com.capstone.dbconnection.DBConnectionInfo;
 import com.capstone.dbconnection.DBConnector;
-import com.capstone.model.Note;
-import com.capstone.model.Password;
-import com.capstone.model.Profile;
 import com.capstone.model.StoredItem;
 import com.capstone.model.User;
 import com.capstone.model.builder.UserBuilder;
@@ -25,11 +18,6 @@ import com.capstone.model.factory.StoredItemFactory;
 
 public class ApplicationDao implements DaoService {
 	private static final String INSERT_USER_SQL = "INSERT INTO USER (id, username, password, email) VALUES (?, ?, ?, ?);";
-	
-	private static final String INSERT_ITEM_SQL = "INSERT INTO stored_item si (id, name, description, item_type, user_id) VALUES (?, ?, ?, ?, ?);";
-	private static final String INSERT_NOTE_SQL = "INSERT INTO note (item_id, contents) VALUES(?, ?);";
-	private static final String INSERT_PASSWORD_SQL = "INSERT INTO password (item_id, website, password) VALUES(?, ?, ?);";
-	private static final String INSERT_PROFILE_SQL = "INSERT INTO profile (item_id, firstname, lastname, address, city) VALUES (?, ?, ?, ?, ?);";
 	
 	private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM user u;";
 	private static final String SELECT_STORED_ITEMS_SQL = "SELECT * FROM stored_item si "
@@ -42,8 +30,7 @@ public class ApplicationDao implements DaoService {
 	
 	private static final String DELETE_USER_SQL = "DELETE FROM user WHERE id = ?;";
 	private static final String UPDATE_USER_SQL = "UPDATE user SET username = ?, password = ?, email = ? WHERE id = ?;";
-	private static final String UPDATE_ITEM_SQL = "UPDATE stored_item SET name = ?, description = ?, modified = LOCAL_TIMESTAMP WHERE id = ?;";
-	
+
 	private final DBConnectionInfo connectionInfo;
 	
 	private UserBuilder userBuilder;
@@ -72,26 +59,9 @@ public class ApplicationDao implements DaoService {
 			
 			insertedRows = statement.executeUpdate();
 			
-			for (StoredItem item : user.getItems()) {
-				String sql = INSERT_ITEM_SQL;
-				
-				switch (item.getItemTypeCode()) {
-					case "NO":
-						sql += INSERT_NOTE_SQL;
-						break;
-					case "PA":
-						sql += INSERT_PASSWORD_SQL;
-						break;
-					case "PR":
-						sql += INSERT_PROFILE_SQL;
-						break;
-				}
-				
-				PreparedStatement saveItemStatement = connection.prepareStatement(sql);
-				
-				SaveItemPreparer saveMethod = saveItemPreparer(user, item);
-				saveMethod.prepareInsert(saveItemStatement);
-				saveMethod.save(saveItemStatement);
+			for (StoredItem item : user.getItems()) {				
+				StoredItemSaver saver = getStoredItemSaver(connection, item);
+				saver.executeInsert(user, item);
 			}
 		}
 		catch (SQLException e) {
@@ -101,14 +71,14 @@ public class ApplicationDao implements DaoService {
 		return insertedRows > 0;
 	}
 	
-	private SaveItemPreparer saveItemPreparer(User user, StoredItem item) {
+	private StoredItemSaver getStoredItemSaver(Connection connection, StoredItem item) {
 		switch (item.getItemTypeCode()) {
 		case "NO":
-			return new SaveNoteDecorator(user, (Note)item);
+			return new NoteSaver(connection);
 		case "PA":
-			return new SavePasswordDecorator(user, (Password)item);
+			return new PasswordSaver(connection);
 		case "PR":
-			return new SaveProfileDecorator(user, (Profile)item);
+			return new ProfileSaver(connection);
 		default:
 			return null;
 		}
@@ -216,24 +186,14 @@ public class ApplicationDao implements DaoService {
 			success = rowCount > 0;
 			
 			for (StoredItem item : user.getItems()) {
-				PreparedStatement saveItemStatement = null;
-				
+				StoredItemSaver itemSaver = getStoredItemSaver(connection, item);
+
 				if (item.getCreated() == null) {
-					saveItemStatement = connection.prepareStatement(INSERT_ITEM_SQL);
-					saveItemStatement.setString(1, item.getId().toString());
-					saveItemStatement.setString(2, item.getName());
-					saveItemStatement.setString(3, item.getDescription());
-					saveItemStatement.setString(4, item.getItemTypeCode());
-					saveItemStatement.setString(5, user.getId().toString());
+					itemSaver.executeInsert(user, item);
 				}
 				else {
-					saveItemStatement = connection.prepareStatement(UPDATE_ITEM_SQL);
-					saveItemStatement.setString(1, item.getName());
-					saveItemStatement.setString(2, item.getDescription());
-					saveItemStatement.setString(3, item.getId().toString());
+					itemSaver.executeUpdate(user, item);
 				}
-				
-				saveItemStatement.execute();	
 			}
 		}
 		catch (SQLException e) {
@@ -242,7 +202,7 @@ public class ApplicationDao implements DaoService {
 		
 		return success;
 	}
-
+	
 	@Override
 	public boolean deleteUser(User user) {
 		boolean success = false;
