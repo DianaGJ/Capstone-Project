@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Home</title>
+<title>Easy Pass: Register</title>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="style.css"/>
 <div id="top"><h1>Register</h1></div>
@@ -9,7 +9,7 @@
 
 <body>
 
-  <form action="action_page.php" method="post">
+  <form action="list.jsp" method="post">
   
     <div class="container">
       <label id="registerlabel">First Name: </label><input class="input" type="text" name="fname" required><br>
