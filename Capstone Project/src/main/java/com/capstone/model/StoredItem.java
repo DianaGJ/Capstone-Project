@@ -18,10 +18,6 @@ public abstract class StoredItem {
 		this.lastModified = lastModified;
 	}
 	
-	public StoredItem(UUID id, String name, String description) {
-		this(id, name, description, null, null);
-	}
-	
 	public UUID getId() {
 		return id;
 	}

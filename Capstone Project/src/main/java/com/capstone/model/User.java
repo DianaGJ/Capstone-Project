@@ -9,6 +9,7 @@ public class User {
 	private String username;
 	private String password;
 	private String email;
+	private boolean verified;
 	private List<StoredItem> items;
 	
 	public User(UUID id, String username, String password, String email) {
@@ -49,6 +50,14 @@ public class User {
 	
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public boolean isVerified() {
+		return verified;
+	}
+	
+	public void setVerified(boolean verified) {
+		this.verified = verified;
 	}
 	
 	public void store(StoredItem item) {

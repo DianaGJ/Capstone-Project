@@ -2,7 +2,8 @@ CREATE TABLE user (
 	id			VARCHAR(36) PRIMARY KEY,
 	username	VARCHAR(50) NOT NULL UNIQUE,
 	password	VARCHAR(50) NOT NULL,
-	email		VARCHAR(50) NOT NULL
+	email		VARCHAR(50) NOT NULL,
+	verified	BOOLEAN NOT NULL
 );
 
 CREATE TABLE stored_item (

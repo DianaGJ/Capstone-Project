@@ -59,9 +59,13 @@ public class ApplicationDao implements DaoService {
 			
 			insertedRows = statement.executeUpdate();
 			
+			PreparedStatement deleteItems = connection.prepareStatement("DELETE FROM stored_item WHERE user_id = ?;");
+			deleteItems.setString(1, user.getId().toString());
+			deleteItems.execute();
+			
 			for (StoredItem item : user.getItems()) {				
-				StoredItemSaver saver = getStoredItemSaver(connection, item);
-				saver.executeInsert(user, item);
+				StoredItemSaver saver = StoredItemSaverFactory.getInstance().getSaver(connection, item);
+				saver.save(user, item);
 			}
 		}
 		catch (SQLException e) {
@@ -69,19 +73,6 @@ public class ApplicationDao implements DaoService {
 		}
 		
 		return insertedRows > 0;
-	}
-	
-	private StoredItemSaver getStoredItemSaver(Connection connection, StoredItem item) {
-		switch (item.getItemTypeCode()) {
-		case "NO":
-			return new NoteSaver(connection);
-		case "PA":
-			return new PasswordSaver(connection);
-		case "PR":
-			return new ProfileSaver(connection);
-		default:
-			return null;
-		}
 	}
 
 	@Override
@@ -185,15 +176,14 @@ public class ApplicationDao implements DaoService {
 			int rowCount = statement.executeUpdate();
 			success = rowCount > 0;
 			
+			PreparedStatement deleteItems = connection.prepareStatement("DELETE FROM stored_item WHERE user_id = ?;");
+			deleteItems.setString(1, user.getId().toString());
+			deleteItems.execute();
+			
 			for (StoredItem item : user.getItems()) {
-				StoredItemSaver itemSaver = getStoredItemSaver(connection, item);
-
-				if (item.getCreated() == null) {
-					itemSaver.executeInsert(user, item);
-				}
-				else {
-					itemSaver.executeUpdate(user, item);
-				}
+				StoredItemSaver itemSaver = StoredItemSaverFactory.getInstance().getSaver(connection, item);
+				
+				itemSaver.save(user, item);
 			}
 		}
 		catch (SQLException e) {
