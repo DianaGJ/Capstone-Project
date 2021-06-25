@@ -1,0 +1,80 @@
+/* CSS Document */
+
+h1 {
+	display: inline-block;
+	background-color: green;
+	color: white;
+	border: 3px solid black;
+	padding: 5px;
+}
+
+#top {
+	background-color:grey;
+	text-align: center;
+	border: 3px solid black;
+}
+
+body {
+	display: block;
+	text-align: center;
+	background: lightgray;
+}
+
+input {
+	width: 50%;
+ 	background-color:white;
+  	padding: 14px 20px;
+  	margin: 8px 0;
+  	border: 1px solid black;
+  	border-radius: 4px;
+  	cursor: pointer;
+}
+
+img {
+	border-radius: 50%;
+	border: 1px solid #ddd;
+  	padding: 5px;
+  	width: 50px;
+	vertical-align: middle;
+}
+
+#registerlabel {
+	font-weight: bold;
+	display:inline-block;
+	padding: 5px;
+	text-align: right;
+	width: 150px;
+}
+
+#sbutton {
+	background-color: blue;
+  	border: 3px solid black;
+  	color: white;
+  	padding: 5px 32px;
+  	text-align: center;
+  	text-decoration: none;
+  	display: inline-block;
+  	font-size: 16px;
+}
+
+#cbutton {
+	background-color: orangered;
+  	border: 3px solid black;
+  	color: white;
+  	padding: 5px 32px;
+  	text-align: center;
+  	text-decoration: none;
+  	display: inline-block;
+  	font-size: 16px;
+}
+
+#ebutton {
+	background-color: yellowgreen;
+  	border: 3px solid black;
+  	color: white;
+  	padding: 5px 32px;
+  	text-align: center;
+  	text-decoration: none;
+  	display: inline-block;
+  	font-size: 16px;
+}
