@@ -3,19 +3,23 @@ package com.capstone.model;
 import java.util.Date;
 import java.util.UUID;
 
-public abstract class StoredItem {
+public class StoredPassword {
 	private UUID id;
 	private String name;
 	private String description;
 	private Date created;
 	private Date lastModified;
+    private String website;
+    private String password;
 	
-	public StoredItem(UUID id, String name, String description, Date created, Date lastModified) {
+	public StoredPassword(UUID id, String name, String description, Date created, Date lastModified, String website, String password) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.created = created;
 		this.lastModified = lastModified;
+        this.website = website;
+        this.password = password;
 	}
 	
 	public UUID getId() {
@@ -46,5 +50,19 @@ public abstract class StoredItem {
 		return lastModified;
 	}
 	
-	public abstract String getItemTypeCode();
+    public String getWebsite() {
+        return website;
+    }
+    
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
