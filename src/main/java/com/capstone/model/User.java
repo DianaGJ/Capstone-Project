@@ -10,13 +10,13 @@ public class User {
 	private String password;
 	private String email;
 	private boolean verified;
-	private List<StoredItem> items;
+	private List<StoredPassword> items;
 	
 	public User(UUID id, String username, String password, String email) {
-		this(id, username, password, email, new ArrayList<StoredItem>());
+		this(id, username, password, email, new ArrayList<StoredPassword>());
 	}
 	
-	public User(UUID id, String username, String password, String email, List<StoredItem> items) {
+	public User(UUID id, String username, String password, String email, List<StoredPassword> items) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -60,16 +60,16 @@ public class User {
 		this.verified = verified;
 	}
 	
-	public void store(StoredItem item) {
+	public void store(StoredPassword item) {
 		items.add(item);
 	}
 	
-	public void delete(StoredItem item) {
+	public void delete(StoredPassword item) {
 		int index = items.indexOf(item);
 		items.remove(index);
 	}
 	
-	public List<StoredItem> getItems() {
+	public List<StoredPassword> getItems() {
 		return items;
 	}
 }

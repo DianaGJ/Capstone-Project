@@ -3,15 +3,25 @@ package com.capstone.model.builder;
 import java.util.List;
 import java.util.UUID;
 
-import com.capstone.model.StoredItem;
+import com.capstone.model.StoredPassword;
 import com.capstone.model.User;
 
 public final class UserBuilder {
+	private static UserBuilder instance = new UserBuilder();
+	
+	public static synchronized UserBuilder getInstance() {
+		return instance;
+	}
+	
+	private UserBuilder() {
+		
+	}
+	
 	private UUID id;
 	private String username;
 	private String password;
 	private String email;
-	private List<StoredItem> items;
+	private List<StoredPassword> items;
 	
 	
 	public UserBuilder setId(UUID id) {
@@ -34,7 +44,7 @@ public final class UserBuilder {
 		return this;
 	}
 	
-	public UserBuilder withItems(List<StoredItem> items) {
+	public UserBuilder withItems(List<StoredPassword> items) {
 		this.items = items;		
 		return this;
 	}

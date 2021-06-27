@@ -11,30 +11,26 @@ import java.util.UUID;
 
 import com.capstone.dbconnection.DBConnectionInfo;
 import com.capstone.dbconnection.DBConnector;
-import com.capstone.model.StoredItem;
+import com.capstone.model.StoredPassword;
 import com.capstone.model.User;
 import com.capstone.model.builder.UserBuilder;
-import com.capstone.model.factory.StoredItemFactory;
+import com.capstone.model.factory.StoredPasswordFactory;
 
 public class ApplicationDao implements DaoService {
 	private static final String INSERT_USER_SQL = "INSERT INTO USER (id, username, password, email) VALUES (?, ?, ?, ?);";
 	
 	private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM user u;";
-	private static final String SELECT_STORED_ITEMS_SQL = "SELECT * FROM stored_item si "
-			+ "LEFT JOIN note n ON n.item_id = si.id "
-			+ "LEFT JOIN password p ON p.item_id = si.id "
-			+ "LEFT JOIN profile pr ON pr.item_id = si.id "
-			+ "WHERE si.user_id = ?;";
-	
-	private static final String SELECT_ONE_USER_SQL = "SELECT * FROM user u WHERE u.id = ?;";
+	private static final String SELECT_ONE_USER_SQL = "SELECT * FROM user u WHERE id = ?;";
 	
 	private static final String DELETE_USER_SQL = "DELETE FROM user WHERE id = ?;";
 	private static final String UPDATE_USER_SQL = "UPDATE user SET username = ?, password = ?, email = ? WHERE id = ?;";
+	
+	private static final String SELECT_PASSWORDS_SQL = "SELECT * FROM password p WHERE user_id = ?;";
+	private static final String INSERT_PASSWORD_SQL = "INSERT INTO password (id, name, description, website, password, user_id) "
+			+ "VALUES (?, ?, ?, ?, ?, ?);";
+	private static final String DELETE_PASSWORD_SQL = "DELETE FROM password WHERE user_id = ?;";
 
 	private final DBConnectionInfo connectionInfo;
-	
-	private UserBuilder userBuilder;
-	private StoredItemFactory storedItemFactory;
 	
 	public ApplicationDao() {
 		this(DBConnectionInfo.HSQL);
@@ -50,22 +46,27 @@ public class ApplicationDao implements DaoService {
 		
 		try (
 			Connection connection = DBConnector.getConnection(connectionInfo);
-			PreparedStatement statement = connection.prepareStatement(INSERT_USER_SQL);
+			PreparedStatement userStatement = connection.prepareStatement(INSERT_USER_SQL);
+			PreparedStatement passwordStatement = connection.prepareStatement(INSERT_PASSWORD_SQL);
 		) {
-			statement.setString(1, user.getId().toString());
-			statement.setString(2, user.getUsername());
-			statement.setString(3, user.getPassword());
-			statement.setString(4, user.getEmail());
+			userStatement.setString(1, user.getId().toString());
+			userStatement.setString(2, user.getUsername());
+			userStatement.setString(3, user.getPassword());
+			userStatement.setString(4, user.getEmail());
 			
-			insertedRows = statement.executeUpdate();
+			insertedRows = userStatement.executeUpdate();
 			
-			PreparedStatement deleteItems = connection.prepareStatement("DELETE FROM stored_item WHERE user_id = ?;");
-			deleteItems.setString(1, user.getId().toString());
-			deleteItems.execute();
-			
-			for (StoredItem item : user.getItems()) {				
-				StoredItemSaver saver = StoredItemSaverFactory.getInstance().getSaver(connection, item);
-				saver.save(user, item);
+			for (StoredPassword item : user.getItems()) {				
+				passwordStatement.clearParameters();
+				
+				passwordStatement.setString(1, item.getId().toString());
+				passwordStatement.setString(2, item.getName());
+				passwordStatement.setString(3, item.getDescription());
+				passwordStatement.setString(4, item.getWebsite());
+				passwordStatement.setString(5, item.getPassword());
+				passwordStatement.setString(6, user.getId().toString());
+				
+				passwordStatement.execute();
 			}
 		}
 		catch (SQLException e) {
@@ -87,7 +88,7 @@ public class ApplicationDao implements DaoService {
 			
 			ResultSet results = statement.executeQuery();
 			
-			while (results.next()) {
+			while (results.next()) {				
 				user = buildUser(connection, results);
 			}
 		}
@@ -120,15 +121,11 @@ public class ApplicationDao implements DaoService {
 		return users;
 	}
 	
-	private User buildUser(Connection connection, ResultSet results) throws SQLException {
-		if (userBuilder == null) {
-			userBuilder = new UserBuilder();
-		}
-		
+	private User buildUser(Connection connection, ResultSet results) throws SQLException {		
 		UUID id = UUID.fromString(results.getString("id"));		
-		List<StoredItem> items = getItems(connection, id.toString());
+		List<StoredPassword> items = getItems(connection, id.toString());
 		
-		User user = userBuilder
+		User user = UserBuilder.getInstance()
 			.setId(id)
 			.setUsername(results.getString("username"))
 			.setPassword(results.getString("password"))
@@ -139,21 +136,18 @@ public class ApplicationDao implements DaoService {
 		return user;
 	}
 	
-	private List<StoredItem> getItems(Connection connection, String userId) throws SQLException {
-		List<StoredItem> items = new ArrayList<StoredItem>();
-		StoredItem item = null;
+	private List<StoredPassword> getItems(Connection connection, String userId) throws SQLException {
+		List<StoredPassword> items = new ArrayList<StoredPassword>();
+		StoredPassword item = null;
 		
-		PreparedStatement itemsStatement = connection.prepareStatement(SELECT_STORED_ITEMS_SQL);
+		PreparedStatement itemsStatement = connection.prepareStatement(SELECT_PASSWORDS_SQL);
 		itemsStatement.setString(1, userId);
 		
 		ResultSet results = itemsStatement.executeQuery();
-		
-		if (storedItemFactory == null) {
-			storedItemFactory = new StoredItemFactory();
-		}
+		StoredPasswordFactory storedPasswordFactory = StoredPasswordFactory.getInstance();
 		
 		while (results.next()) {
-			item = storedItemFactory.createItem(results);
+			item = storedPasswordFactory.createPassword(results);
 			items.add(item);
 		}
 		
@@ -167,6 +161,7 @@ public class ApplicationDao implements DaoService {
 		try (
 			Connection connection = DBConnector.getConnection(connectionInfo);
 			PreparedStatement statement = connection.prepareStatement(UPDATE_USER_SQL);
+			PreparedStatement passwordStatement = connection.prepareStatement(INSERT_PASSWORD_SQL);
 		) {
 			statement.setString(1, user.getUsername());
 			statement.setString(2, user.getPassword());
@@ -176,14 +171,21 @@ public class ApplicationDao implements DaoService {
 			int rowCount = statement.executeUpdate();
 			success = rowCount > 0;
 			
-			PreparedStatement deleteItems = connection.prepareStatement("DELETE FROM stored_item WHERE user_id = ?;");
+			PreparedStatement deleteItems = connection.prepareStatement(DELETE_PASSWORD_SQL);
 			deleteItems.setString(1, user.getId().toString());
 			deleteItems.execute();
 			
-			for (StoredItem item : user.getItems()) {
-				StoredItemSaver itemSaver = StoredItemSaverFactory.getInstance().getSaver(connection, item);
+			for (StoredPassword item : user.getItems()) {
+				passwordStatement.clearParameters();
 				
-				itemSaver.save(user, item);
+				passwordStatement.setString(1, item.getId().toString());
+				passwordStatement.setString(2, item.getName());
+				passwordStatement.setString(3, item.getDescription());
+				passwordStatement.setString(4, item.getWebsite());
+				passwordStatement.setString(5, item.getPassword());
+				passwordStatement.setString(6, user.getId().toString());
+				
+				passwordStatement.execute();
 			}
 		}
 		catch (SQLException e) {
