@@ -12,13 +12,14 @@
   <form action="action_page.php" method="post">
   
     <div class="container">
-      <br><br><br>
+      <br><br><br><br>
 
-      <br><button id ="sbutton" class="button" type="submit">Add</button>
+      <button id ="sbutton" class="button" type="submit">Add</button>
       <button id ="ebutton" class="button" type="submit">Edit</button>
-      <button id="cbutton" class="button" type="reset">Delete</button><br><br>
-        
+      <button id="cbutton" class="button" type="reset">Delete</button><br><br><br>   
   </form>
+
+  <form action="index.jsp"><button id="lbutton" class="button" type="submit">Logout</button></form>
 
 </body>
 </html>

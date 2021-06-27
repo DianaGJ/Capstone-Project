@@ -19,8 +19,9 @@
       <input class="input" type="password" placeholder="Enter Password" name="psw" required><br><br>
 
       <button id ="sbutton" class="button" type="submit">Login</button><br><br>
-        
-    <span class="psw">No account? <a href="#">Register here.</a></span>
+    
+    <span class="psw">Forgot your password? <a href="recover.jsp">Recover it here.</a></span><br><br>
+    <span class="register">No account? <a href="register.jsp">Register here.</a></span>
   </form>
 
 </body>
