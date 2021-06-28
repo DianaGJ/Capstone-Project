@@ -4,4 +4,14 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+  	<servlet-name>ListController</servlet-name>
+  	<display-name>ListController</display-name>
+  	<description></description>
+  	<servlet-class>com.capstone.controller.ListController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>ListController</servlet-name>
+  	<url-pattern>/list</url-pattern>
+  </servlet-mapping>
 </web-app>
