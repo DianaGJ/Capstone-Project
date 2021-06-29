@@ -4,7 +4,7 @@
 <title>Easy Pass</title>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="style.css"/>
-<div id="top"><h1 id="greentop">EasyPass</h1></div>
+<div id="top"><h1>EasyPass</h1></div>
 </head>
 
 <body>
@@ -20,8 +20,8 @@
 
       <button id ="sbutton" class="button" type="submit">Login</button><br><br>
     
-    <span class="psw">Forgot your password? <a href="recover.jsp">Recover it here.</a></span><br><br>
-    <span class="register">No account? <a href="register.jsp">Register here.</a></span>
+    <span class="msg">Forgot your password? <a href="recover.jsp">Recover it here.</a></span><br><br>
+    <span class="msg">No account? <a href="register.jsp">Register here.</a></span>
   </form>
 
 </body>

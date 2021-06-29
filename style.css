@@ -2,40 +2,55 @@
 
 h1 {
 	display: inline-block;
-	background-color: green;
-	color: white;
-	border: 3px solid black;
+	color: black;
 	padding: 5px;
+	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 }
 
 #top {
-	background-color:grey;
 	text-align: center;
-	border: 3px solid black;
+}
+
+form {
+	border-style: double;
+	border-width: 15px;
+	border-radius: 25px;
+	padding: 50px;
+	box-sizing: border-box;
+	display: inline-block;
+	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+	background-color:honeydew;
 }
 
 body {
 	display: block;
 	text-align: center;
-	background: lightgray;
+	background-image: url('background2.png');
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 input {
 	width: 50%;
  	background-color:white;
-  	padding: 14px 20px;
+  	padding: 14px 35px;
   	margin: 8px 0;
   	border: 1px solid black;
   	border-radius: 4px;
   	cursor: pointer;
+	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 }
 
 img {
 	border-radius: 50%;
 	border: 1px solid #ddd;
-  	padding: 5px;
+  	padding: 10px;
   	width: 50px;
 	vertical-align: middle;
+}
+
+.msg {
+	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 }
 
 #registerlabel {
@@ -47,14 +62,24 @@ img {
 }
 
 #sbutton {
-	background-color: blue;
-  	border: 3px solid black;
-  	color: white;
-  	padding: 5px 32px;
-  	text-align: center;
-  	text-decoration: none;
-  	display: inline-block;
-  	font-size: 16px;
+	color: #494949 !important;
+	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+	text-transform: uppercase;
+	text-decoration: none;
+	background: whitesmoke;
+	padding: 5px 25px;
+	border: 4px solid #494949 !important;
+	display: inline-block;
+	border-radius: 25px;
+	transition: all 0.4s ease 0s;
+}
+
+#sbutton:hover {
+	color: #ffffff !important;
+	background: black;
+	border-color: black;
+	color:whitesmoke;
+	transition: all 0.4s ease 0s;
 }
 
 #cbutton {
