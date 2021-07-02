@@ -9,7 +9,6 @@ public class MysqlConnection {
 	private static Connection con = null;
 
 	static {
-
 		String url = "jdbc:mysql://localhost:3306/easypass?&serverTimezone=UTC";
 		String user = "root";
 		String pass = "root";

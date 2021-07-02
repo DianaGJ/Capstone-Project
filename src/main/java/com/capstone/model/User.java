@@ -1,75 +1,83 @@
 package com.capstone.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 public class User {
-	private UUID id;
+
+	private int id;
 	private String username;
-	private String password;
 	private String email;
-	private boolean verified;
-	private List<StoredPassword> items;
+	private String password;
+	private boolean isVerified;
+	private String verificationCode;
 	
-	public User(UUID id, String username, String password, String email) {
-		this(id, username, password, email, new ArrayList<StoredPassword>());
+	public User() {
+		
 	}
-	
-	public User(UUID id, String username, String password, String email, List<StoredPassword> items) {
+
+	public User(String username, String email, String password, boolean isVerified, String verificationCode) {
+
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.isVerified = isVerified;
+		this.verificationCode = verificationCode;
+	}
+
+	public User(int id, String username, String email, String password, boolean isVerified, String verificationCode) {
+
 		this.id = id;
 		this.username = username;
-		this.password = password;
 		this.email = email;
-		this.items = items;
+		this.password = password;
+		this.isVerified = isVerified;
+		this.verificationCode = verificationCode;
 	}
-	
-	public UUID getId() {
+
+	public int getId() {
 		return id;
 	}
-	
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getUsername() {
 		return username;
 	}
-	
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
-	public String getPassword() {
-		return password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
+
 	public String getEmail() {
 		return email;
 	}
-	
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public boolean isVerified() {
-		return verified;
+		return isVerified;
 	}
-	
-	public void setVerified(boolean verified) {
-		this.verified = verified;
+
+	public void setVerified(boolean isVerified) {
+		this.isVerified = isVerified;
 	}
-	
-	public void store(StoredPassword item) {
-		items.add(item);
+
+	public String getVerificationCode() {
+		return verificationCode;
 	}
-	
-	public void delete(StoredPassword item) {
-		int index = items.indexOf(item);
-		items.remove(index);
+
+	public void setVerificationCode(String verificationCode) {
+		this.verificationCode = verificationCode;
 	}
-	
-	public List<StoredPassword> getItems() {
-		return items;
-	}
+
 }

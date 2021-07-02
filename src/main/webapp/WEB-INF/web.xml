@@ -10,8 +10,59 @@
   	<description></description>
   	<servlet-class>com.capstone.controller.ListController</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>RegisterController</servlet-name>
+  	<display-name>RegisterController</display-name>
+  	<description></description>
+  	<servlet-class>com.capstone.controller.RegisterController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>ActivationController</servlet-name>
+  	<display-name>ActivationController</display-name>
+  	<description></description>
+  	<servlet-class>com.capstone.controller.ActivationController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>UpdateController</servlet-name>
+  	<display-name>UpdateController</display-name>
+  	<description></description>
+  	<servlet-class>com.capstone.controller.UpdateController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>RecoveryController</servlet-name>
+  	<display-name>RecoveryController</display-name>
+  	<description></description>
+  	<servlet-class>com.capstone.controller.RecoveryController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>UpdatePassController</servlet-name>
+  	<display-name>UpdatePassController</display-name>
+  	<description></description>
+  	<servlet-class>com.capstone.controller.UpdatePassController</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>ListController</servlet-name>
   	<url-pattern>/list</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>RegisterController</servlet-name>
+  	<url-pattern>/register</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ActivationController</servlet-name>
+  	<url-pattern>/ActivationController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UpdateController</servlet-name>
+  	<url-pattern>/UpdateController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>RecoveryController</servlet-name>
+  	<url-pattern>/RecoveryController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UpdatePassController</servlet-name>
+  	<url-pattern>/UpdatePassController</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

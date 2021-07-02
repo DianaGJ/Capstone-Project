@@ -1,19 +1,23 @@
 package com.capstone.controller;
 
-
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import com.capstone.dao.ApplicationService;
+import com.capstone.dao.ApplicationServiceImpl;
 import com.capstone.dbconnection.MysqlConnection;
+import com.capstone.model.Password;
 import com.capstone.model.User;
 
 /**
@@ -26,9 +30,10 @@ public class ListController extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
+	ApplicationService applicationService;
+
 	public ListController() {
-		super();
-		// TODO Auto-generated constructor stub
+		applicationService = new ApplicationServiceImpl();
 	}
 
 	/**
@@ -42,31 +47,90 @@ public class ListController extends HttpServlet {
 		String instruccion = request.getParameter("instruccion");
 		if (instruccion != null) {
 
+			switch (instruccion) {
+			case "edit":
+				
+				try {
+					edit(request,response);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				break;
+			case "delete":
+				try {
+					delete(request,response);
+				} catch (SQLException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				break;
+			case "create":
+				
+				
+				break;
+
+		
+			}
+
 		} else {
-			listar(request, response);
+			try {
+				listar(request, response);
+			} catch (NumberFormatException | ServletException | IOException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		}
 
 	}
 
-	private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void edit(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+		int id = Integer.parseInt(request.getParameter("id"));
+		Password password = applicationService.getPassword(id);
+		request.setAttribute("password", password);
+		request.getRequestDispatcher("details.jsp").forward(request, response);
+		
+		
+		
+		
+	}
+
+	private void delete(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+		int id = Integer.parseInt(request.getParameter("id"));
+		applicationService.deletePassword(id);
+		response.sendRedirect("list");
+		
+	}
+
+	private void listar(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, NumberFormatException, SQLException {
 		List<User> users = new ArrayList<User>();
-		try {
-			ResultSet rs = MysqlConnection.getConnection().prepareStatement("Select * from user").executeQuery();
-			while (rs.next()) {
-				User entityU = new User(null, rs.getString("username"), "1", "true");
-
-				users.add(entityU);
-
+		Cookie[] cookies = request.getCookies();
+		List<Password> passwords = new ArrayList<Password>();
+		String username = null;
+		String userId = null;
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("user")) {
+					username = cookie.getValue();
+				}
+				if (cookie.getName().equals("userId")) {
+					userId = cookie.getValue();
+				}
 			}
 
-			request.setAttribute("users", users);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			passwords = applicationService.getAllPasswords(Integer.valueOf(userId));
+			request.setAttribute("passwords", passwords);
+			request.setAttribute("user", username);
+			request.getRequestDispatcher("/list.jsp").forward(request, response);
+
+		} else {
+			response.sendRedirect("");
 		}
-		request.getRequestDispatcher("/list.jsp").forward(request, response);
-		;
+
 	}
 
 	/**
@@ -80,4 +144,3 @@ public class ListController extends HttpServlet {
 	}
 
 }
-

@@ -64,3 +64,4 @@ local.properties
 .sts4-cache/
 /target/
 /.classpath
+/data/
