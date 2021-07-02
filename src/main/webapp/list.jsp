@@ -43,7 +43,8 @@
 								value="${row.password}" /></td>
 
 						<td style="width: 10.00%" scope="row"><a href="${linkEdit}">edit</a></td>
-						<td style="width: 10.00%" scope="row"><a href="${linkDelete}">delete</a></td>
+						<td style="width: 10.00%" scope="row"><a href="${linkDelete}"
+							onclick="return confirm('Want to delete this password?');">delete</a></td>
 					</tr>
 
 				</c:forEach>
@@ -57,11 +58,9 @@
 
 			<table>
 				<tr>
-					<td><a id="sbutton" class="button "
-						 href="details.jsp" >Add</a></td>
+					<td><a id="sbutton" class="button " href="details.jsp">Add</a></td>
 
-					<td><a id="sbutton" class="button "
-						 href="index.jsp">Log
+					<td><a id="sbutton" class="button " href="index.jsp">Log
 							Out</a></td>
 				</tr>
 			</table>
