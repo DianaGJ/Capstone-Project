@@ -48,7 +48,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	@Override
 	public boolean deleteUser(User user) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
@@ -66,7 +66,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	@Override
 	public List<Password> getAllPasswords(int id) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return passwordDao.getAllForUser(id);
 	}
 
@@ -78,18 +78,17 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	@Override
 	public Password getPassword(int id) throws SQLException {
-		// TODO Auto-generated method stub
+
 		return passwordDao.getById(id);
 	}
 
 	@Override
 	public User getUserById(int id) throws SQLException {
-		// TODO Auto-generated method stub
+
 		return userDao.getById(id);
 	}
 
 
-	
-	
+
 
 }

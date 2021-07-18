@@ -2,8 +2,6 @@ package com.capstone.dao;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.UUID;
-
 import com.capstone.model.Password;
 import com.capstone.model.User;
 

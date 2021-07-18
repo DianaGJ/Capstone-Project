@@ -11,7 +11,6 @@ public interface UserDao {
 	public User getById(int id) throws SQLException;
 	public User getByUsername(String username) throws SQLException;
 	public void update(User user) throws SQLException;
-	public void delete(int id);
 	public List<User> getAll() throws SQLException;
 	
 

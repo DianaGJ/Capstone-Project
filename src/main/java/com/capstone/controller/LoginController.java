@@ -15,55 +15,39 @@ import com.capstone.dao.ApplicationServiceImpl;
 import com.capstone.model.User;
 import com.capstone.util.CodeGenerator;
 
-/**
- * Servlet implementation class LoginController
- */
 @WebServlet("/LoginController")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 
 	ApplicationService applicationService;
 
 	public LoginController() {
 		applicationService = new ApplicationServiceImpl();
-		// TODO Auto-generated constructor stub
+
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 		String username = request.getParameter("uname");
 		String password = request.getParameter("psw");
-		
+
 		Boolean authenticatedUser = true;
 		User user = null;
 		try {
 			user = applicationService.getUserByUsername(username);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		if (user != null) {
 			if (user.getPassword().equalsIgnoreCase(DigestUtils.md5Hex(password))) {
 				if (user.isVerified()) {
-					// user set verification code
 					System.out.println("Logged as " + username);
 					Cookie loginCookie = new Cookie("user", user.getUsername());
 					Cookie userIdCookie = new Cookie("userId", String.valueOf(user.getId()));
@@ -71,31 +55,29 @@ public class LoginController extends HttpServlet {
 					loginCookie.setMaxAge(lifeSessionInSec);
 					response.addCookie(loginCookie);
 					response.addCookie(userIdCookie);
-					response.sendRedirect("list");	
-				}else {
-					System.out.println("please verify your account");
+					response.sendRedirect("list");
+				} else {
+					System.out.println("Please verify your account");
 					request.setAttribute("user", user);
 					if (user.getVerificationCode() != null) {
 						request.setAttribute("user", user);
 						request.getRequestDispatcher("/activate.jsp").forward(request, response);
-					}else {
+					} else {
 						user.setVerificationCode(CodeGenerator.generateCode());
 						try {
-							
+
 							applicationService.updateUser(user);
 							request.getRequestDispatcher("/activate.jsp").forward(request, response);
 						} catch (SQLException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
-					
-					
+
 				}
-			}else {
-				System.out.println("please verify your password");
-				
-				request.setAttribute("errorMessage", "please verify your password");
+			} else {
+				System.out.println("Please verify your password");
+
+				request.setAttribute("errorMessage", "Incorrect, please verify your password");
 				authenticatedUser = false;
 			}
 		} else {
@@ -103,10 +85,10 @@ public class LoginController extends HttpServlet {
 			request.setAttribute("errorMessage", "User doesn't exist");
 			authenticatedUser = false;
 		}
-		
+
 		if (authenticatedUser) {
-			
-		}else {
+
+		} else {
 			request.getRequestDispatcher("").forward(request, response);
 		}
 

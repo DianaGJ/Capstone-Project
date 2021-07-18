@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.capstone.model.Password;
-import com.capstone.model.User;
 
 public interface PasswordDao {
 	

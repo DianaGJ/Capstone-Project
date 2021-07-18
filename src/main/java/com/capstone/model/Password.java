@@ -24,7 +24,7 @@ public class Password {
 		this.password = password;
 	}
 	public Password() {
-		// TODO Auto-generated constructor stub
+
 	}
 	public int getId() {
 		return id;

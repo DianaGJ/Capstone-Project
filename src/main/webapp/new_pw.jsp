@@ -18,12 +18,13 @@
 
 	<form action="UpdatePassController" method="post">
 
-		<input type="hidden" id="username" name="username" value="${user.username }">
+		<input type="hidden" id="username" name="username"
+			value="${user.username }">
 		<table>
 			<thead>
 				<tr>
-					<th> YOUR USERNAME IS </th>
-					<th style=" color: red;"> <c:out  value=" ${user.username }"></c:out></th>
+					<th id="registerlabel">Your username is:</th>
+					<th style="color: red;"><c:out value=" ${user.username }"></c:out></th>
 				</tr>
 			</thead>
 			<tr>

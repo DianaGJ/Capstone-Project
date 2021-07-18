@@ -13,16 +13,9 @@ import com.capstone.dao.ApplicationService;
 import com.capstone.dao.ApplicationServiceImpl;
 import com.capstone.model.Password;
 
-/**
- * Servlet implementation class UpdatePassController
- */
-//@WebServlet("/UpdatePassController")
 public class UpdateController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 	ApplicationService applicationService;
 
 	public UpdateController() {
@@ -30,24 +23,14 @@ public class UpdateController extends HttpServlet {
 		applicationService = new ApplicationServiceImpl();
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
+
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String id = request.getParameter("id").length()>0 ?  request.getParameter("id") : null;
+		String id = request.getParameter("id").length() > 0 ? request.getParameter("id") : null;
 		String website = request.getParameter("website");
 		String websiteUser = request.getParameter("websiteUser");
 		String password = request.getParameter("password");
@@ -59,6 +42,7 @@ public class UpdateController extends HttpServlet {
 		newPassword.setWebsiteUser(websiteUser);
 		newPassword.setPassword(password);
 		Cookie[] cookies = request.getCookies();
+		@SuppressWarnings("unused")
 		String username = null;
 		String userId = null;
 
@@ -77,13 +61,13 @@ public class UpdateController extends HttpServlet {
 						}
 					}
 				}
-				
+
 				newPassword.setUserId(Integer.valueOf(userId));
 				applicationService.addPasswordToUser(newPassword);
 			}
 			response.sendRedirect("list");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 

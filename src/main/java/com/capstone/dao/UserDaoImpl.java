@@ -3,9 +3,7 @@ package com.capstone.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.capstone.dbconnection.MysqlConnection;
@@ -80,38 +78,28 @@ public class UserDaoImpl implements UserDao {
 	public void update(User user) throws SQLException {
 		if (user.getVerificationCode() == null) {
 			ps = MysqlConnection.getConnection().prepareStatement(UPDATE_USER);
-		}
-			else {
+		} else {
 			ps = MysqlConnection.getConnection().prepareStatement(UPDATE_USER_WITH_CODE);
-			}
-			ps.setString(1, user.getUsername());
-			ps.setString(2, user.getEmail());
-			ps.setString(3, user.getPassword());
-			ps.setBoolean(4, user.isVerified());
-			ps.setString(5, user.getVerificationCode());
-			ps.setInt(6,  user.getId());
-			if (ps.executeUpdate() >0) {
-				System.out.println("USER UPDATED");
-			}else {
-				System.out.println("something went wrong!!");
-			}
-			ps.close();
-
-			
 		}
-
-	
-
-	@Override
-	public void delete(int id) {
-		// TODO Auto-generated method stub
+		ps.setString(1, user.getUsername());
+		ps.setString(2, user.getEmail());
+		ps.setString(3, user.getPassword());
+		ps.setBoolean(4, user.isVerified());
+		ps.setString(5, user.getVerificationCode());
+		ps.setInt(6, user.getId());
+		if (ps.executeUpdate() > 0) {
+			System.out.println("USER UPDATED");
+		} else {
+			System.out.println("something went wrong!!");
+		}
+		ps.close();
 
 	}
 
 	@Override
 	public List<User> getAll() throws SQLException {
 		List<User> users = new ArrayList<User>();
-		
+
 		ps = MysqlConnection.getConnection().prepareStatement(SELECT_ALL_USERS);
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {

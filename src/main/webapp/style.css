@@ -90,7 +90,7 @@ img {
 
 #registerlabel {
 	display: table-cell;
-	text-align: right;
+	text-align: left;
 	font-weight: bold;
 	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 	padding: 5px;
