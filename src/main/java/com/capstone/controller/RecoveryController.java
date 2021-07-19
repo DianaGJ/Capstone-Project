@@ -29,13 +29,12 @@ public class RecoveryController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		String email = request.getParameter("email");
 
 		List<User> users = new ArrayList<User>();
 		User userToUpdate = null;
 		try {
-			users = applicationService.getUsers();
+			users = applicationService.getAllUsers();
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -46,7 +45,6 @@ public class RecoveryController extends HttpServlet {
 			}
 		}
 		if (userToUpdate != null) {
-
 			request.setAttribute("user", userToUpdate);
 			request.getRequestDispatcher("new_pw.jsp").forward(request, response);
 		} else {

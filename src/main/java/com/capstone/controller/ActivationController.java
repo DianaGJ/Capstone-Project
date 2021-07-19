@@ -34,7 +34,7 @@ public class ActivationController extends HttpServlet {
 		String email = request.getParameter("email");
 		String verificationCode = request.getParameter("verificationCode");
 		try {
-			List<User> users = applicationService.getUsers();
+			List<User> users = applicationService.getAllUsers();
 			User user = users.stream().filter(userTemp -> email.equalsIgnoreCase(userTemp.getEmail())).findFirst()
 					.get();
 			if (user.getVerificationCode() != null) {

@@ -24,7 +24,7 @@ public class Password {
 		this.password = password;
 	}
 	public Password() {
-
+		
 	}
 	public int getId() {
 		return id;
@@ -56,7 +56,4 @@ public class Password {
 	public void setWebsiteUser(String websiteUser) {
 		this.websiteUser = websiteUser;
 	}
-	
-	
-
 }

@@ -42,8 +42,6 @@ public class UpdateController extends HttpServlet {
 		newPassword.setWebsiteUser(websiteUser);
 		newPassword.setPassword(password);
 		Cookie[] cookies = request.getCookies();
-		@SuppressWarnings("unused")
-		String username = null;
 		String userId = null;
 
 		try {
@@ -53,9 +51,6 @@ public class UpdateController extends HttpServlet {
 			} else {
 				if (cookies != null) {
 					for (Cookie cookie : cookies) {
-						if (cookie.getName().equals("user")) {
-							username = cookie.getValue();
-						}
 						if (cookie.getName().equals("userId")) {
 							userId = cookie.getValue();
 						}
@@ -63,11 +58,10 @@ public class UpdateController extends HttpServlet {
 				}
 
 				newPassword.setUserId(Integer.valueOf(userId));
-				applicationService.addPasswordToUser(newPassword);
+				applicationService.insertPassword(newPassword);
 			}
 			response.sendRedirect("list");
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
 

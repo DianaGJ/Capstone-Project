@@ -7,11 +7,11 @@ import com.capstone.model.User;
 
 public interface UserDao {
 	
-	public void insert(User user) throws SQLException;
-	public User getById(int id) throws SQLException;
-	public User getByUsername(String username) throws SQLException;
-	public void update(User user) throws SQLException;
-	public List<User> getAll() throws SQLException;
-	
+	public void insertUser(User user) throws SQLException;
+	public User getUserById(int id) throws SQLException;
+	public User getUserByUsername(String username) throws SQLException;
+	public void updateUser(User user) throws SQLException;
+	public void deleteUser(int id);
+	public List<User> getAllUsers() throws SQLException;
 
 }

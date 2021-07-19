@@ -32,11 +32,9 @@ public class ListController extends HttpServlet {
 
 			switch (instruccion) {
 			case "edit":
-
 				try {
 					edit(request, response);
 				} catch (SQLException e1) {
-
 					e1.printStackTrace();
 				}
 
@@ -45,22 +43,18 @@ public class ListController extends HttpServlet {
 				try {
 					delete(request, response);
 				} catch (SQLException | IOException e) {
-
 					e.printStackTrace();
 				}
 
 				break;
 			case "create":
-
 				break;
-
 			}
 
 		} else {
 			try {
 				listar(request, response);
 			} catch (NumberFormatException | ServletException | IOException | SQLException e) {
-
 				e.printStackTrace();
 			}
 
@@ -71,17 +65,16 @@ public class ListController extends HttpServlet {
 	private void edit(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		Password password = applicationService.getPassword(id);
+		Password password = applicationService.getPasswordByUserId(id);
 		request.setAttribute("password", password);
 		request.getRequestDispatcher("details.jsp").forward(request, response);
-
 	}
 
-	private void delete(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+	private void delete(HttpServletRequest request, HttpServletResponse response) 
+			throws SQLException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		applicationService.deletePassword(id);
 		response.sendRedirect("list");
-
 	}
 
 	private void listar(HttpServletRequest request, HttpServletResponse response)
@@ -100,7 +93,7 @@ public class ListController extends HttpServlet {
 				}
 			}
 
-			passwords = applicationService.getAllPasswords(Integer.valueOf(userId));
+			passwords = applicationService.getAllPasswordsForUserId(Integer.valueOf(userId));
 			request.setAttribute("passwords", passwords);
 			request.setAttribute("user", username);
 			request.getRequestDispatcher("/list.jsp").forward(request, response);

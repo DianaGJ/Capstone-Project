@@ -72,7 +72,6 @@ public class LoginController extends HttpServlet {
 							e.printStackTrace();
 						}
 					}
-
 				}
 			} else {
 				System.out.println("Please verify your password");

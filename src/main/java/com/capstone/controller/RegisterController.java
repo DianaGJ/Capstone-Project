@@ -1,4 +1,3 @@
-
 package com.capstone.controller;
 
 import java.io.IOException;
@@ -52,8 +51,8 @@ public class RegisterController extends HttpServlet {
 
 		List<User> users;
 		try {
-			users = applicationService.getUsers();
-
+			users = applicationService.getAllUsers();
+		
 			if (password.equals(passwordConf)) {
 				if (users.size() > 0) {
 					if (!users.stream().anyMatch(userIndex -> username.equalsIgnoreCase(userIndex.getUsername()))) {
@@ -62,7 +61,6 @@ public class RegisterController extends HttpServlet {
 							applicationService.insertUser(user);
 							request.setAttribute("user", user);
 							request.getRequestDispatcher("/activate.jsp").forward(request, response);
-							;
 						} else {
 							user = users.stream()
 									.filter(userWithEmail -> email.equalsIgnoreCase(userWithEmail.getEmail()))
@@ -70,7 +68,6 @@ public class RegisterController extends HttpServlet {
 
 							request.setAttribute("erroMessage", email + " is already registered.");
 							request.getRequestDispatcher("/register.jsp").forward(request, response);
-
 						}
 					} else {
 						request.setAttribute("erroMessage", "user " + username + " already exists.");
@@ -89,11 +86,8 @@ public class RegisterController extends HttpServlet {
 				request.setAttribute("erroMessage", "Password doesn't match");
 				request.getRequestDispatcher("/register.jsp").forward(request, response);
 			}
-
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
-
 	}
 }

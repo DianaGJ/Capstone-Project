@@ -7,10 +7,10 @@ import com.capstone.model.Password;
 
 public interface PasswordDao {
 	
-	public void insert(Password password) throws SQLException;
-	public Password getById(int id) throws SQLException;
-	public void update(Password password) throws SQLException;
-	public void delete(int id) throws SQLException;
-	public List<Password> getAllForUser(int id) throws SQLException;
+	public void insertPassword(Password password) throws SQLException;
+	public Password getPasswordByUserId(int userId) throws SQLException;
+	public void updatePassword(Password password) throws SQLException;
+	public void deletePassword(int id) throws SQLException;
+	public List<Password> getAllPasswordsForUserId(int id) throws SQLException;
 
 }

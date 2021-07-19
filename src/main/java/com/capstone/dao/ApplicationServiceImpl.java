@@ -10,85 +10,53 @@ public class ApplicationServiceImpl implements ApplicationService {
 	
 	UserDao userDao;
 	PasswordDao passwordDao;
+	
 	public  ApplicationServiceImpl() {
 		userDao = new UserDaoImpl();
 		passwordDao = new PasswordDaoImpl();
 	}
 
-	@Override
 	public void insertUser(User user) throws SQLException {
-		userDao.insert(user);
-		
+		userDao.insertUser(user);
 	}
-	
-	@Override
+
 	public User getUserByUsername(String username) throws SQLException {
-	
-		
-		return userDao.getByUsername(username);
+		return userDao.getUserByUsername(username);
 	}
 
-	@Override
-	public boolean isUsernameAvaiable(String username) throws SQLException {
-		
-		return userDao.getByUsername(username) != null ? false : true ;
+	public List<User> getAllUsers() throws SQLException {
+		return userDao.getAllUsers();
 	}
 
-	@Override
-	public List<User> getUsers() throws SQLException {
-		
-		return userDao.getAll();
-	}
-
-	@Override
 	public void updateUser(User user) throws SQLException {
-		
-		userDao.update(user);
+		userDao.updateUser(user);
 	}
 
-	@Override
-	public boolean deleteUser(User user) {
-		
-		return false;
+	public void deleteUser(int id) {
+		userDao.deleteUser(id);
 	}
 
-	@Override
-	public void addPasswordToUser(Password password) throws SQLException {
-		passwordDao.insert(password);
-		
+	public void insertPassword(Password password) throws SQLException {
+		passwordDao.insertPassword(password);
 	}
 
-	@Override
 	public void updatePassword(Password password) throws SQLException {
-		passwordDao.update(password);
-		
+		passwordDao.updatePassword(password);
 	}
 
-	@Override
-	public List<Password> getAllPasswords(int id) throws SQLException {
-		
-		return passwordDao.getAllForUser(id);
+	public List<Password> getAllPasswordsForUserId(int id) throws SQLException {
+		return passwordDao.getAllPasswordsForUserId(id);
 	}
 
-	@Override
 	public void deletePassword(int id) throws SQLException {
-		passwordDao.delete(id);
-		
+		passwordDao.deletePassword(id);
 	}
 
-	@Override
-	public Password getPassword(int id) throws SQLException {
-
-		return passwordDao.getById(id);
+	public Password getPasswordByUserId(int id) throws SQLException {
+		return passwordDao.getPasswordByUserId(id);
 	}
 
-	@Override
 	public User getUserById(int id) throws SQLException {
-
-		return userDao.getById(id);
+		return userDao.getUserById(id);
 	}
-
-
-
-
 }
