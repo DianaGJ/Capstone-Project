@@ -40,6 +40,12 @@
   	<description></description>
   	<servlet-class>com.capstone.controller.UpdatePassController</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>GeneratePasswordController</servlet-name>
+  	<display-name>GeneratePasswordController</display-name>
+  	<description></description>
+  	<servlet-class>com.capstone.controller.GeneratePasswordController</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>ListController</servlet-name>
   	<url-pattern>/list</url-pattern>
@@ -64,5 +70,8 @@
   	<servlet-name>UpdatePassController</servlet-name>
   	<url-pattern>/UpdatePassController</url-pattern>
   </servlet-mapping>
-  
+  <servlet-mapping>
+  	<servlet-name>GeneratePasswordController</servlet-name>
+  	<url-pattern>/generate_password</url-pattern>
+  </servlet-mapping>
 </web-app>

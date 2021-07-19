@@ -32,8 +32,13 @@
 			</tr>
 			<tr>
 				<td><label id="registerlabel">Password: </label></td>
-				<td><input class="input" type="text" name="password"
+				<td><input id="password" class="input" type="text" name="password"
 					value="${password.password}" required></td>
+				
+			</tr>
+			<tr>
+				<td><input id="generate-length" type="number" value="10" min="1"></td>
+				<td><button type="button" id="sbutton" onclick="getPassword()">Generate</button></td>
 			</tr>
 		</table>
 		<br> <br>
@@ -44,5 +49,14 @@
 
 	</form>
 
+	<script>
+		function getPassword() {
+			var length = document.getElementById("generate-length").value;
+			
+			fetch('/Capstone/generate_password?method=random&length=' + length)
+				.then(response => response.text())
+				.then(text => document.getElementById("password").value = text);
+		}
+	</script>
 </body>
 </html>
