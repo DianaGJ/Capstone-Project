@@ -58,6 +58,10 @@ input {
 	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 }
 
+button {
+	width: 50%;
+}
+
 .reginput {
 	display: inline-block;
 	width: 75%;

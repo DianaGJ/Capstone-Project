@@ -18,7 +18,7 @@
 	<form action="GeneratePassword" method="get">
 		<table>
 			<tr>
-				<td colspan="2">Need help coming up with a password? Generate one here!</td>
+				<td colspan="2" style="padding-bottom: 20px;">Need help coming up with a password? Generate one here!</td>
 			</tr>
 			<tr>
 				<td><label for="generate-length">Length:</label></td>
@@ -29,7 +29,7 @@
 				<td><input id="suggested-password" type="text" value="${password}"></td>
 			</tr>
 			<tr>
-				<td colspan="2"><button id="sbutton" class="button" type="submit">Generate</button></td>
+				<td colspan="2"><button id="sbutton" class="button" type="submit">Generate Code</button></td>
 			</tr>
 			<tr>
 				<td colspan="2"><a href="list"><input type="button" class="button" value="Back" id="sbutton" /></a></td>
