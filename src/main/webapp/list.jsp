@@ -59,7 +59,7 @@
 			<table>
 				<tr>
 					<td><a id="sbutton" class="button " href="details.jsp">Add</a></td>
-					<td><a id="sbutton" class="button"  href="GeneratePassword">Generate</a></td>
+					<td><a id="sbutton" class="button"  href="GeneratePassword">Generate Code</a></td>
 					<td><a id="sbutton" class="button " href="index.jsp">Log
 							Out</a></td>
 				</tr>
