@@ -18,6 +18,9 @@
 	<form action="GeneratePassword" method="get">
 		<table>
 			<tr>
+				<td colspan="2">Need help coming up with a password? Generate one here!</td>
+			</tr>
+			<tr>
 				<td><label for="generate-length">Length:</label></td>
 				<td><input id="generate-length" type="number" name="length" value="${length}" min="1" required></td>
 			</tr>
