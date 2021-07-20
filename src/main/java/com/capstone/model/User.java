@@ -8,9 +8,9 @@ public class User {
 	private String password;
 	private boolean isVerified;
 	private String verificationCode;
-	
+
 	public User() {
-		
+
 	}
 
 	public User(String username, String email, String password, boolean isVerified, String verificationCode) {
