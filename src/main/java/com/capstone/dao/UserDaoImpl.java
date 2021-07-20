@@ -22,6 +22,7 @@ public class UserDaoImpl implements UserDao {
 	private static final String INSERT_USER = "INSERT INTO user(username,email,password,is_verified,verification_code,verification_code_time) VALUES (?,?,?,?,?,NOW())";
 	private static final String GET_USER_BY_ID = "SELECT * FROM user WHERE id = ?";
 	private static final String GET_USER_BY_USERNAME = "SELECT * FROM user WHERE username = ?";
+	private static final String GET_USER_BY_EMAIL = "SELECT * FROM user WHERE email = ?;";
 	private static final String SELECT_ALL_USERS = "Select * from user";
 
 	public void insertUser(User user) throws SQLException {
@@ -71,6 +72,31 @@ public class UserDaoImpl implements UserDao {
 		Connection connection = MySQLConnectionFactory.getInstance().getConnection();
 		ps = connection.prepareStatement(GET_USER_BY_ID);
 		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+
+		User user = new User();
+		
+		while (rs.next()) {
+			user.setId(rs.getInt("id"));
+			user.setUsername(rs.getString("username"));
+			user.setEmail(rs.getString("email"));
+			user.setPassword(rs.getString("password"));
+			user.setVerified(rs.getBoolean("is_verified"));
+			user.setVerificationCode(rs.getString("verification_code"));
+		}
+		
+		rs.close();
+		ps.close();
+		connection.close();
+		
+		return user;
+	}
+	
+	@Override
+	public User getUserByEmail(String email) throws SQLException {
+		Connection connection = MySQLConnectionFactory.getInstance().getConnection();
+		ps = connection.prepareStatement(GET_USER_BY_EMAIL);
+		ps.setString(1, email);
 		ResultSet rs = ps.executeQuery();
 
 		User user = new User();

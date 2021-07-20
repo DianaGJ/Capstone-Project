@@ -19,9 +19,17 @@ public class ApplicationServiceImpl implements ApplicationService {
 	public void insertUser(User user) throws SQLException {
 		userDao.insertUser(user);
 	}
+	
+	public User getUserById(int id) throws SQLException {
+		return userDao.getUserById(id);
+	}
 
 	public User getUserByUsername(String username) throws SQLException {
 		return userDao.getUserByUsername(username);
+	}
+	
+	public User getUserByEmail(String email) throws SQLException {
+		return userDao.getUserByEmail(email);
 	}
 
 	public List<User> getAllUsers() throws SQLException {
@@ -54,9 +62,5 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	public Password getPasswordByUserId(int id) throws SQLException {
 		return passwordDao.getPasswordByUserId(id);
-	}
-
-	public User getUserById(int id) throws SQLException {
-		return userDao.getUserById(id);
 	}
 }
