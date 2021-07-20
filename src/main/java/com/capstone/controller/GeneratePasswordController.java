@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.capstone.PasswordGenerator;
 import com.capstone.RandomPasswordGenerator;
 
-@WebServlet("/generate_password")
+@WebServlet("/GeneratePassword")
 public class GeneratePasswordController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,9 @@ public class GeneratePasswordController extends HttpServlet {
 		PasswordGenerator passwordGenerator = getGenerator(generationMethod);
 		String password = passwordGenerator.generate(length);
 		
-		response.getWriter().print(password);
+		request.setAttribute("password", password);
+		request.setAttribute("length", length);
+		request.getRequestDispatcher("generate_password.jsp").forward(request, response);
 	}
 	
 	private PasswordGenerator getGenerator(String method) {
