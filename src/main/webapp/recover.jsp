@@ -11,11 +11,11 @@
 
 <body>
 
-	<form action="RecoveryController" method="post">
+	<form action="RecoveryController" method="post" style="min-width: 600px;">
 		<table>
 			<tr>
-				<td><label id="registerlabel">Email Address: </label></td>
-				<td><input class="input" type="email" name="email" required></td>
+				<td><label id="registerlabel" for="recovery-email">Email Address: </label></td>
+				<td><input id="recovery-email" class="input" type="email" name="email" required></td>
 			</tr>
 		</table>
 		<br>

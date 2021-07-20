@@ -62,6 +62,18 @@ button {
 	width: 50%;
 }
 
+select {
+	width: 50%;
+	background-color:	white;
+	padding:	14px 35px;
+	margin:		8px 0;
+	border:		2px solid black;
+	border-radius:	4px;
+	cursor:	pointer;
+	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+	box-sizing:	content-box;
+}
+
 .reginput {
 	display: inline-block;
 	width: 75%;
@@ -161,4 +173,9 @@ img {
   width: 50%;
   border-radius: 10px;
   padding: 10px;
+}
+
+#recovery-email {
+	width:	100%;
+	text-align:	center;
 }

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.capstone.PINGenerator;
 import com.capstone.PasswordGenerator;
 import com.capstone.RandomPasswordGenerator;
 
@@ -28,17 +29,24 @@ public class GeneratePasswordController extends HttpServlet {
 			length = Integer.valueOf(lengthString);
 		}
 		
+		if (generationMethod == null) {
+			generationMethod = "random";
+		}
+		
 		PasswordGenerator passwordGenerator = getGenerator(generationMethod);
 		String password = passwordGenerator.generate(length);
 		
 		request.setAttribute("password", password);
 		request.setAttribute("length", length);
+		request.setAttribute("method", generationMethod);
 		request.getRequestDispatcher("generate_password.jsp").forward(request, response);
 	}
 	
 	private PasswordGenerator getGenerator(String method) {
-		if (method == "random") {
-			return new RandomPasswordGenerator();
+		if (method != null) {
+			if (method.equalsIgnoreCase("pin")) {
+				return new PINGenerator();
+			}
 		}
 		
 		return new RandomPasswordGenerator();

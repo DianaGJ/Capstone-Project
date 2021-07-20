@@ -47,8 +47,7 @@
 				<h3 style="color: red;">${erroMessage}</h3>
 			</c:if>
 			<br>
-			<button id="sbutton" class="button" type="submit"
-				style="margin-right: 10px;">Create</button>
+			<button id="sbutton" class="button" type="submit" style="margin-bottom: 8px;">Create</button>
 			<a type="reset" href=""><button id="sbutton" type="button">Reset</button></a>
 			<br> <br> <span class="create">Have an account? <a
 				href="index.jsp">Click here to login.</a></span>

@@ -25,6 +25,15 @@
 				<td><input id="generate-length" type="number" name="length" value="${length}" min="1" required></td>
 			</tr>
 			<tr>
+				<td><label for="method">Method:</label></td>
+				<td>
+					<select id="method" name="method">
+						<option value="random" ${method == "random" ? 'selected' : ''}>Random</option>
+						<option value="pin" ${method == "pin" ? 'selected' : ''}>PIN</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<td><label for="suggested-password">Password:</label></td>
 				<td><input id="suggested-password" type="text" value="${password}"></td>
 			</tr>
