@@ -3,6 +3,7 @@ package com.capstone.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.capstone.dbconnection.ConnectionFactory;
 import com.capstone.model.Password;
 import com.capstone.model.User;
 
@@ -11,9 +12,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 	UserDao userDao;
 	PasswordDao passwordDao;
 	
-	public  ApplicationServiceImpl() {
-		userDao = new UserDaoImpl();
-		passwordDao = new PasswordDaoImpl();
+	public  ApplicationServiceImpl(ConnectionFactory connectionFactory) {
+		userDao = new UserDaoImpl(connectionFactory);
+		passwordDao = new PasswordDaoImpl(connectionFactory);
 	}
 
 	public void insertUser(User user) throws SQLException {

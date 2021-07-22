@@ -7,15 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.capstone.dbconnection.MySQLConnectionFactory;
+import com.capstone.dbconnection.ConnectionFactory;
 import com.capstone.model.User;
 
 public class UserDaoImpl implements UserDao {
-	private PreparedStatement ps;
-
-	public UserDaoImpl() {
-
-	}
 
 	private static final String UPDATE_USER = "UPDATE user SET username = ?,email = ?, password = ?,is_verified = ?,verification_code_time =? WHERE id = ?";
 	private static final String UPDATE_USER_WITH_CODE = "UPDATE user SET username = ?,email = ?, password = ?,is_verified = ?,verification_code =? ,verification_code_time = NOW() WHERE id = ?";
@@ -25,8 +20,16 @@ public class UserDaoImpl implements UserDao {
 	private static final String GET_USER_BY_EMAIL = "SELECT * FROM user WHERE email = ?;";
 	private static final String SELECT_ALL_USERS = "Select * from user";
 
+	private final ConnectionFactory connectionFactory;
+	private PreparedStatement ps;
+
+	public UserDaoImpl(ConnectionFactory connectionFactory) {
+		this.connectionFactory = connectionFactory;
+	}
+	
+	
 	public void insertUser(User user) throws SQLException {
-		Connection connection = MySQLConnectionFactory.getInstance().getConnection();
+		Connection connection = connectionFactory.getConnection();
 		ps = connection.prepareStatement(INSERT_USER);
 		ps.setString(1, user.getUsername());
 		ps.setString(2, user.getEmail());
@@ -44,7 +47,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User getUserByUsername(String username) throws SQLException {
-		Connection connection = MySQLConnectionFactory.getInstance().getConnection();
+		Connection connection = connectionFactory.getConnection();
 		ps = connection.prepareStatement(GET_USER_BY_USERNAME);
 		ps.setString(1, username);
 		ResultSet rs = ps.executeQuery();
@@ -69,7 +72,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User getUserById(int id) throws SQLException {
-		Connection connection = MySQLConnectionFactory.getInstance().getConnection();
+		Connection connection = connectionFactory.getConnection();
 		ps = connection.prepareStatement(GET_USER_BY_ID);
 		ps.setInt(1, id);
 		ResultSet rs = ps.executeQuery();
@@ -94,7 +97,7 @@ public class UserDaoImpl implements UserDao {
 	
 	@Override
 	public User getUserByEmail(String email) throws SQLException {
-		Connection connection = MySQLConnectionFactory.getInstance().getConnection();
+		Connection connection = connectionFactory.getConnection();
 		ps = connection.prepareStatement(GET_USER_BY_EMAIL);
 		ps.setString(1, email);
 		ResultSet rs = ps.executeQuery();
@@ -119,7 +122,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public void updateUser(User user) throws SQLException {
-		Connection connection = MySQLConnectionFactory.getInstance().getConnection();
+		Connection connection = connectionFactory.getConnection();
 		
 		if (user.getVerificationCode() == null) {
 			ps = connection.prepareStatement(UPDATE_USER);
@@ -154,7 +157,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public List<User> getAllUsers() throws SQLException {
-		Connection connection = MySQLConnectionFactory.getInstance().getConnection();
+		Connection connection = connectionFactory.getConnection();
 		ps = connection.prepareStatement(SELECT_ALL_USERS);
 		ResultSet rs = ps.executeQuery();
 

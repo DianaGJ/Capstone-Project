@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.capstone.dao.ApplicationService;
 import com.capstone.dao.ApplicationServiceImpl;
+import com.capstone.dbconnection.MySQLConnectionFactory;
 import com.capstone.model.Password;
 
 @WebServlet("/listServlet")
@@ -21,7 +22,7 @@ public class ListController extends HttpServlet {
 	ApplicationService applicationService;
 
 	public ListController() {
-		applicationService = new ApplicationServiceImpl();
+		applicationService = new ApplicationServiceImpl(MySQLConnectionFactory.getInstance());
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

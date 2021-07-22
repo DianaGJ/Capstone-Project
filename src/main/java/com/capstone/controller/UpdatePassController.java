@@ -12,6 +12,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import com.capstone.dao.ApplicationService;
 import com.capstone.dao.ApplicationServiceImpl;
+import com.capstone.dbconnection.MySQLConnectionFactory;
 import com.capstone.model.User;
 
 public class UpdatePassController extends HttpServlet {
@@ -20,7 +21,7 @@ public class UpdatePassController extends HttpServlet {
 	ApplicationService applicationService;
 
 	public UpdatePassController() {
-		applicationService = new ApplicationServiceImpl();
+		applicationService = new ApplicationServiceImpl(MySQLConnectionFactory.getInstance());
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -15,6 +15,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import com.capstone.dao.ApplicationService;
 import com.capstone.dao.ApplicationServiceImpl;
 import com.capstone.dao.UserDaoImpl;
+import com.capstone.dbconnection.MySQLConnectionFactory;
 import com.capstone.model.User;
 import com.capstone.util.CodeGenerator;
 
@@ -26,7 +27,7 @@ public class RegisterController extends HttpServlet {
 	UserDaoImpl userDao;
 
 	public RegisterController() {
-		applicationService = new ApplicationServiceImpl();
+		applicationService = new ApplicationServiceImpl(MySQLConnectionFactory.getInstance());
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

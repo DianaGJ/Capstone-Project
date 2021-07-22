@@ -7,20 +7,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.capstone.dbconnection.MySQLConnectionFactory;
+import com.capstone.dbconnection.ConnectionFactory;
 import com.capstone.model.Password;
 
 
 public class PasswordDaoImpl implements PasswordDao {
-	private PreparedStatement ps;
+
 	private static final String INSERT_PASSWORD = "Insert into password (website,websiteUser,user_id,password) values (?,?,?,?)";
 	private static final String GET_ALL_PASSWORDS_OF_USER = "SELECT * from password WHERE user_id = ? ";
 	private static final String GET_PASSWORD_BY_ID = "Select * FROM password WHERE id = ?";
 	private static final String UPDATE_PASSWORD = "UPDATE password SET website = ?, websiteUser = ?, password = ? WHERE id = ? ";
 
+	private final ConnectionFactory connectionFactory;
+	private PreparedStatement ps;
+	
+	public PasswordDaoImpl(ConnectionFactory connectionFactory) {
+		this.connectionFactory = connectionFactory;
+	}
+	
 	@Override
 	public void insertPassword(Password password) throws SQLException {
-		Connection connection = MySQLConnectionFactory.getInstance().getConnection();		
+		Connection connection = connectionFactory.getConnection();		
 		ps = connection.prepareStatement(INSERT_PASSWORD);
 		
 		ps.setString(1, password.getWebsite());
@@ -38,7 +45,7 @@ public class PasswordDaoImpl implements PasswordDao {
 
 	@Override
 	public Password getPasswordByUserId(int id) throws SQLException {
-		Connection connection = MySQLConnectionFactory.getInstance().getConnection();
+		Connection connection = connectionFactory.getConnection();
 		ps = connection.prepareStatement(GET_PASSWORD_BY_ID);
 		ps.setInt(1, id);
 		
@@ -64,7 +71,7 @@ public class PasswordDaoImpl implements PasswordDao {
 
 	@Override
 	public void updatePassword(Password password) throws SQLException {
-		Connection connection = MySQLConnectionFactory.getInstance().getConnection();
+		Connection connection = connectionFactory.getConnection();
 		ps = connection.prepareStatement(UPDATE_PASSWORD);
 		ps.setString(1, password.getWebsite());
 		ps.setString(2, password.getWebsiteUser());
@@ -83,7 +90,7 @@ public class PasswordDaoImpl implements PasswordDao {
 
 	@Override
 	public void deletePassword(int id) throws SQLException {
-		Connection connection = MySQLConnectionFactory.getInstance().getConnection();
+		Connection connection = connectionFactory.getConnection();
 		ps = connection.prepareStatement("DELETE  FROM password where id = ?");
 		ps.setInt(1, id);
 		
@@ -97,7 +104,7 @@ public class PasswordDaoImpl implements PasswordDao {
 
 	@Override
 	public List<Password> getAllPasswordsForUserId(int id) throws SQLException {
-		Connection connection = MySQLConnectionFactory.getInstance().getConnection();
+		Connection connection = connectionFactory.getConnection();
 		ps = connection.prepareStatement(GET_ALL_PASSWORDS_OF_USER);
 		ps.setInt(1, id);
 		ResultSet rs = ps.executeQuery();

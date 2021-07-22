@@ -2,8 +2,6 @@ package com.capstone.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.capstone.dao.ApplicationService;
 import com.capstone.dao.ApplicationServiceImpl;
+import com.capstone.dbconnection.MySQLConnectionFactory;
 import com.capstone.model.User;
 import com.capstone.util.RecoveryUtil;
 
@@ -21,7 +20,7 @@ public class RecoveryController extends HttpServlet {
 	ApplicationService applicationService;
 
 	public RecoveryController() {
-		applicationService = new ApplicationServiceImpl();
+		applicationService = new ApplicationServiceImpl(MySQLConnectionFactory.getInstance());
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.digest.DigestUtils;
 import com.capstone.dao.ApplicationService;
 import com.capstone.dao.ApplicationServiceImpl;
+import com.capstone.dbconnection.MySQLConnectionFactory;
 import com.capstone.model.User;
 import com.capstone.util.CodeGenerator;
 
@@ -22,7 +23,7 @@ public class LoginController extends HttpServlet {
 	ApplicationService applicationService;
 
 	public LoginController() {
-		applicationService = new ApplicationServiceImpl();
+		applicationService = new ApplicationServiceImpl(MySQLConnectionFactory.getInstance());
 
 	}
 

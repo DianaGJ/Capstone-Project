@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.capstone.dao.ApplicationService;
 import com.capstone.dao.ApplicationServiceImpl;
+import com.capstone.dbconnection.MySQLConnectionFactory;
 import com.capstone.model.User;
 import com.capstone.util.CodeGenerator;
 
@@ -21,7 +22,7 @@ public class ActivationController extends HttpServlet {
 
 	public ActivationController() {
 		super();
-		applicationService = new ApplicationServiceImpl();
+		applicationService = new ApplicationServiceImpl(MySQLConnectionFactory.getInstance());
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -43,12 +43,12 @@ public class GeneratePasswordController extends HttpServlet {
 	}
 	
 	private PasswordGenerator getGenerator(String method) {
-		if (method != null) {
-			if (method.equalsIgnoreCase("pin")) {
+		switch (method) {
+			case "pin":
 				return new PINGenerator();
-			}
+			case "random":
+			default:
+				return new RandomPasswordGenerator();
 		}
-		
-		return new RandomPasswordGenerator();
 	}
 }
