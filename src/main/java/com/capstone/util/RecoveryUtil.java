@@ -36,9 +36,10 @@ public final class RecoveryUtil {
 		try {		
 			byte[] bytes = decoder.decode(code);
 			
-			if (bytes.length > Long.BYTES) {
+			if (bytes.length > Long.BYTES) {			
 				final ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-				buffer.put(0, bytes, bytes.length - Long.BYTES, Long.BYTES);
+				buffer.put(bytes, bytes.length - Long.BYTES, Long.BYTES);
+				buffer.flip();
 				
 				long time = buffer.getLong();
 				LocalDateTime dateTime = LocalDateTime.ofEpochSecond(time, 0, ZoneOffset.UTC);

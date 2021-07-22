@@ -28,6 +28,12 @@ public class RecoveryController extends HttpServlet {
 			throws ServletException, IOException {
 		
 		String code = request.getParameter("code");
+		
+		if (code == null) {
+			request.getRequestDispatcher("/recover.jsp").forward(request, response);
+			return;
+		}
+		
 		String email = RecoveryUtil.decodeUrl(code);
 		
 		if (email == null) {
