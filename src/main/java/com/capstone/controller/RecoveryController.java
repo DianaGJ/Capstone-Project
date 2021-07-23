@@ -63,11 +63,8 @@ public class RecoveryController extends HttpServlet {
 		String url = "RecoveryController?code=" + code;
 		System.out.println("Emailing password recovery link: " + url + " to " + email);
 		
-		StringBuilder sb = new StringBuilder();
-		sb.append("<p>You have recently requested to reset your password.</p>");
-		sb.append("<p>Please click the link below to perform the reset.</p>");
-		sb.append("<p><a href=\"" + url + "\">Reset Password</a></p>");
-		response.getWriter().write(sb.toString());
+		request.setAttribute("code", code);
+		request.getRequestDispatcher("recover_confirm.jsp").forward(request, response);
 	}
 
 }
