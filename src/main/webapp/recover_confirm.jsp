@@ -14,14 +14,15 @@
 
 <body>
 
-  <form action="RecoveryController" method="get">
+  <form action="VerificationCodeController" method="post">
     
     <label id="registerclabel">You have recently requested to reset your password.</label><br><br>
-    <label id="registerclabel">Please click the link below to perform the reset.</label><br><br>
+    <label id="registerclabel">Please check your email <c:out value="${email}"></c:out> and enter your verification code below.</label><br><br>
 
-	<input type="hidden" name="code" value="${code}" />
-
-    <button id ="sbutton" class="button" type="submit">Reset Password</button><br><br><br>
+	<input type="text" name="code" />
+	<input type="hidden" name="email" value="${email}" />
+	<input type="hidden" name="codeGenerated" value="${codeGenerated}" />
+    <button id ="sbutton" class="button" type="submit" >Reset Password</button><br><br><br>
     
   </form>
 

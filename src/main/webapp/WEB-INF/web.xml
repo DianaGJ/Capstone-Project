@@ -40,6 +40,12 @@
   	<description></description>
   	<servlet-class>com.capstone.controller.UpdatePassController</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>VerificationCodeController</servlet-name>
+  	<display-name>VerificationCodeController</display-name>
+  	<description></description>
+  	<servlet-class>com.capstone.controller.VerificationCodeController</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>ListController</servlet-name>
   	<url-pattern>/list</url-pattern>
@@ -63,5 +69,9 @@
   <servlet-mapping>
   	<servlet-name>UpdatePassController</servlet-name>
   	<url-pattern>/UpdatePassController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>VerificationCodeController</servlet-name>
+  	<url-pattern>/VerificationCodeController</url-pattern>
   </servlet-mapping>
 </web-app>

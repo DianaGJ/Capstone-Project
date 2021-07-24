@@ -9,6 +9,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import com.capstone.dao.ApplicationService;
 import com.capstone.dao.ApplicationServiceImpl;
@@ -29,6 +31,10 @@ public class LoginController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		System.out.println("Login Page");
+		HttpSession session = request.getSession();
+		System.out.println(session.getId());
 
 	}
 
