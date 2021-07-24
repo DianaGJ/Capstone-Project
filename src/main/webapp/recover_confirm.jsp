@@ -17,13 +17,17 @@
   <form action="VerificationCodeController" method="post">
     
     <label id="registerclabel">You have recently requested to reset your password.</label><br><br>
-    <label id="registerclabel">Please check your email <c:out value="${email}"></c:out> and enter your verification code below.</label><br><br>
+    <label id="registerclabel">Please check your email <b><c:out value="${email}"></c:out></b> and enter your verification code below.</label><br><br>
 
-	<input type="text" name="code" />
+	<input type="text" name="code" style="text-align: center"/>
 	<input type="hidden" name="email" value="${email}" />
 	<input type="hidden" name="codeGenerated" value="${codeGenerated}" />
+	<br><br>
     <button id ="sbutton" class="button" type="submit" >Reset Password</button><br><br><br>
     
+    <span class="msg">Return to <a
+			href="index.jsp">Login</a> page.
+		</span>
   </form>
 
 </body>
