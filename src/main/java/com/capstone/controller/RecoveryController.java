@@ -13,7 +13,7 @@ import com.capstone.dao.ApplicationServiceImpl;
 import com.capstone.dbconnection.MySQLConnectionFactory;
 import com.capstone.model.User;
 import com.capstone.util.CodeGenerator;
-import com.capstone.util.RecoveryUtil;
+
 import com.capstone.util.Sender;
 
 public class RecoveryController extends HttpServlet {
@@ -28,34 +28,7 @@ public class RecoveryController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String code = request.getParameter("code");
 
-		if (code == null) {
-			request.getRequestDispatcher("/recover.jsp").forward(request, response);
-			return;
-		}
-
-		String email = RecoveryUtil.decodeUrl(code);
-
-		if (email == null) {
-			request.getRequestDispatcher("/recover.jsp").forward(request, response);
-			return;
-		}
-
-		User userToUpdate = null;
-		try {
-			userToUpdate = applicationService.getUserByEmail(email);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		if (userToUpdate != null) {
-			request.setAttribute("user", userToUpdate);
-			request.getRequestDispatcher("new_pw.jsp").forward(request, response);
-		} else {
-			request.setAttribute("errorMessage", "user " + email + " doesn't exist");
-			request.getRequestDispatcher("").forward(request, response);
-		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
