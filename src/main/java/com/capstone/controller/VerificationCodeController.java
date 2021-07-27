@@ -12,43 +12,37 @@ import com.capstone.dao.ApplicationServiceImpl;
 import com.capstone.dbconnection.MySQLConnectionFactory;
 import com.capstone.model.User;
 
-/**
- * Servlet implementation class VerificationCodeController
- */
 public class VerificationCodeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	ApplicationService applicationService;
-    public VerificationCodeController() {
-    	applicationService = new ApplicationServiceImpl(MySQLConnectionFactory.getInstance());
-    }
 
+	public VerificationCodeController() {
+		applicationService = new ApplicationServiceImpl(MySQLConnectionFactory.getInstance());
+	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String email = request.getParameter("email");
 		String code = request.getParameter("code");
-		
-		
+
 		if (code.trim().equalsIgnoreCase(request.getParameter("codeGenerated").trim())) {
 			try {
 				User user = applicationService.getUserByEmail(email);
 				request.setAttribute("user", user);
 				request.getRequestDispatcher("new_pw.jsp").forward(request, response);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			}
-			
-			
-		}else {
+
+		} else {
 			System.out.println("Wrong code, try again.");
 			request.setAttribute("email", email);
 			request.setAttribute("code", code);
