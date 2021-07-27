@@ -32,8 +32,8 @@
       </c:if>
         
     
-    <span class="msg">Forgot your password? <a href="recover.jsp">Recover it here.</a></span><br><br>
-    <span class="msg">No account? <a href="register.jsp">Register here.</a></span>
+    <span class="msg">No account? <a href="register.jsp">Register here.</a></span><br><br>
+    <span class="msg">Forgot your password? <a href="recover.jsp">Recover it here.</a></span>
 
   </form>
 
